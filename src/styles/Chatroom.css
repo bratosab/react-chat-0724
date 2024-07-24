@@ -3,6 +3,7 @@ main {
     flex-direction: column;
     margin: 70px 0 70px;
     overflow-y: scroll;
+    width: 720px;
 }
 
 form {
