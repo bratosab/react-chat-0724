@@ -1,18 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { Message } from "./Message";
-import { addDoc, collection, orderBy, query } from "firebase/firestore";
-import { useCollectionData } from "react-firebase-hooks/firestore";
-import { auth, store } from "../firebaseInstance";
+import { auth } from "../firebaseInstance";
 import "../styles/Chatroom.css";
 import { useAutoScroll } from "../hooks/useAutoScroll";
+import { useMessages } from "../hooks/useMessages";
 
 export function Chatroom() {
-  const messageCollection = collection(store, "messages");
-  const q = query(messageCollection, orderBy("timestamp"));
-
-  const [messages] = useCollectionData(q);
+  const [messages, sendNewMessage] = useMessages();
   const [message, setMessage] = useState("");
-  const [scrollElement] = useAutoScroll(messages)
+  const [scrollElement] = useAutoScroll(messages);
 
   const sendMessage = (formEvent) => {
     formEvent.preventDefault();
@@ -24,7 +20,7 @@ export function Chatroom() {
       avatar: auth.currentUser.photoURL,
     };
 
-    addDoc(messageCollection, newMessage);
+    sendNewMessage(newMessage)
     setMessage("");
   };
 
