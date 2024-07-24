@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Message } from "./Message";
 import { addDoc, collection, orderBy, query } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { auth, store } from "../firebaseInstance";
 import "../styles/Chatroom.css";
+import { useAutoScroll } from "../hooks/useAutoScroll";
 
 export function Chatroom() {
   const messageCollection = collection(store, "messages");
@@ -11,6 +12,7 @@ export function Chatroom() {
 
   const [messages] = useCollectionData(q);
   const [message, setMessage] = useState("");
+  const [scrollElement] = useAutoScroll(messages)
 
   const sendMessage = (formEvent) => {
     formEvent.preventDefault();
@@ -39,6 +41,7 @@ export function Chatroom() {
               userId={msg.userId}
             />
           ))}
+          <span ref={scrollElement}></span>
       </main>
       <form onSubmit={sendMessage}>
         <input
