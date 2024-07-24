@@ -3,6 +3,7 @@ import { Message } from "./Message";
 import { addDoc, collection, orderBy, query } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { auth, store } from "../firebaseInstance";
+import "../styles/Chatroom.css";
 
 export function Chatroom() {
   const messageCollection = collection(store, "messages");
@@ -15,14 +16,14 @@ export function Chatroom() {
     formEvent.preventDefault();
 
     const newMessage = {
-      message: message, 
+      message: message,
       timestamp: Date.now(),
       userId: auth.currentUser.uid,
-      avatar: auth.currentUser.photoURL
-    }
+      avatar: auth.currentUser.photoURL,
+    };
 
-    addDoc(messageCollection, newMessage)
-    setMessage("")
+    addDoc(messageCollection, newMessage);
+    setMessage("");
   };
 
   return (
